@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Locations;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use phpDocumentor\Reflection\Location;
 
 class LocationModelController extends Controller
 {
@@ -49,6 +50,29 @@ class LocationModelController extends Controller
 
     }
 
+    public function positions(Request $request){
+
+        $mLocations = Locations::all();
+
+        if($mLocations->count() == 0) return AppHelper::error("No Buses Moving Yet");
+
+        return response()->json($this->processLocations($mLocations->toArray()));
+
+    }
+
+    public function positionAlone(Request $request, $busNumber){
+
+        if(preg_match("/[0-9]/", $busNumber)) return AppHelper::error("Invalid Request");
+
+        $mLocation = Locations::all()
+                                    ->where('bus_id', $busNumber);
+
+        if($mLocation->count() != 1) return AppHelper::error("Bus Was Not Found!");
+
+        return response()->json($this->processLocations($mLocation->toArray()));
+
+    }
+
     private function save(array $location){
 
         $mLocation = new Locations($location);
@@ -68,6 +92,36 @@ class LocationModelController extends Controller
             return AppHelper::error("Location Saved!");
 
         }
+
+    }
+
+    public function processLocations(array $locations){
+
+        $resp['message'] = "Buses found";
+        $resp['error']   = false;
+
+        foreach ($locations as $location){
+
+            $resp['bus'][] = $this->modelLocations(new Locations($location));
+
+        }
+
+        return $resp;
+
+    }
+
+    public function modelLocations(Locations $location){
+
+        return [
+
+            'bus'   => (new BusModelController())->busModeller($location->bus_id),
+            'position' => [
+                'latitude' => $location->latitude,
+                'longitude'=> $location->longitude,
+                'street'   => $location->street
+            ]
+
+        ];
 
     }
 
