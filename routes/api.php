@@ -44,3 +44,16 @@ Route::group(['middleware' => 'guest:api'], function () {
     Route::post('oauth/{driver}', [OAuthController::class, 'redirect']);
     Route::get('oauth/{driver}/callback', [OAuthController::class, 'handleCallback'])->name('oauth.callback');
 });
+
+
+Route::group([
+    'prefix' => 'locations'
+], function (){
+
+    Route::post('save/{busId}', [\App\Http\Controllers\LocationModelController::class, 'saveLocation']);
+
+    Route::get('positions', [\App\Http\Controllers\LocationModelController::class, 'positions']);
+
+    Route::get('positions/{busNumber}', [\App\Http\Controllers\LocationModelController::class, 'positionAlone']);
+
+});

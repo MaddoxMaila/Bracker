@@ -15,8 +15,11 @@ $config = [
   <title>{{ config('app.name') }}</title>
 
   <link rel="stylesheet" href="{{ mix('dist/css/app.css') }}">
+
 </head>
 <body>
+
+  <script type="text/javascript" src="{{ asset('dist/pusher.min.js') }}"></script>
   <div id="app"></div>
 
   {{-- Global configuration object --}}
