@@ -47,6 +47,14 @@ Route::group(['middleware' => 'guest:api'], function () {
 
 
 Route::group([
+    'prefix' => 'bus'
+], function (){
+
+    Route::post('add', [\App\Http\Controllers\BusModelController::class, 'addBus']);
+
+});
+
+Route::group([
     'prefix' => 'locations'
 ], function (){
 

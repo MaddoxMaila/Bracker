@@ -1,13 +1,13 @@
 <template>
-  <card :title="$t('home')">
-    {{ $t('you_are_logged_in') }}
-  </card>
+
+  <view-map></view-map>
+
 </template>
 
 <script>
+import ViewMap from "../components/builders/views/ViewMap";
 export default {
-  middleware: 'auth',
-
+  components: {ViewMap},
   metaInfo () {
     return { title: this.$t('home') }
   }
