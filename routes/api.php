@@ -50,7 +50,9 @@ Route::group([
     'prefix' => 'bus'
 ], function (){
 
-    Route::post('add', [\App\Http\Controllers\BusModelController::class, 'addBus']);
+    Route::post('add', [\App\Http\Controllers\BusModelController::class, 'add']);
+
+    Route::get('all', [\App\Http\Controllers\BusModelController::class, 'availableBuses']);
 
 });
 

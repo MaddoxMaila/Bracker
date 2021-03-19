@@ -9,10 +9,10 @@ class AppHelper extends Controller
 
     public static function error(string $e){
 
-        return response()->json([
+        return /*response()->json(*/[
             'error'=> true,
             'message' => $e
-        ]);
+        ]/*)*/;
 
     }
 

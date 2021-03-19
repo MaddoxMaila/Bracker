@@ -6,6 +6,7 @@ use App\Models\Locations;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use phpDocumentor\Reflection\Location;
+use App\Http\Controllers\AppHelper;
 
 class LocationModelController extends Controller
 {
@@ -110,18 +111,35 @@ class LocationModelController extends Controller
 
     }
 
+    public function locationByBusId($id){
+
+    	$mLocation = Locations::all()
+    															->where('bus_id', $id);
+
+    	if($mLocation->count() == 0) return AppHelper::error("No Bus By This Identifier");
+
+    	return $this->location($location);
+
+    }
+
     public function modelLocations(Locations $location){
 
         return [
 
             'bus'   => (new BusModelController())->busModeller($location->bus_id),
-            'position' => [
+            'position' => $this->location($location)
+
+        ];
+
+    }
+
+    public function location(Locations $location){
+
+    	return [
                 'latitude' => $location->latitude,
                 'longitude'=> $location->longitude,
                 'street'   => $location->street
-            ]
-
-        ];
+            ];
 
     }
 
