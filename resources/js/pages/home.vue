@@ -1,6 +1,10 @@
 <template>
 
-  <view-map></view-map>
+  <div class="wrap">
+  	
+  	<view-map></view-map>
+
+  </div>
 
 </template>
 

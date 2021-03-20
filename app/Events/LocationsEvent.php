@@ -9,8 +9,11 @@ use Illuminate\Broadcasting\PrivateChannel;
 use Illuminate\Contracts\Broadcasting\ShouldBroadcast;
 use Illuminate\Foundation\Events\Dispatchable;
 use Illuminate\Queue\SerializesModels;
+use App\Http\Controllers\LocationModelController;
+use App\Http\Controllers\AppHelper;
+use App\Models\Locations;
 
-class LocationsEvent
+class LocationsEvent implements ShouldBroadcast
 {
     use Dispatchable, InteractsWithSockets, SerializesModels;
 
@@ -31,6 +34,20 @@ class LocationsEvent
      */
     public function broadcastOn()
     {
-        return new PrivateChannel('channel-name');
+        return new Channel('bus-locations');
+    }
+
+    public function broadcastAs(){
+        return 'locations';
+    }
+
+    public function broadcastWith(){
+
+        $mLocations = Locations::all();
+
+        if($mLocations->count() == 0) return AppHelper::error("No Buses");
+
+        return (new LocationModelController())->processLocations($mLocations->toArray());
+
     }
 }

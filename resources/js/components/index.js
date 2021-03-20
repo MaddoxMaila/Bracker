@@ -4,7 +4,8 @@ import Child from './Child'
 import Button from './Button'
 import Checkbox from './Checkbox'
 import { HasError, AlertError, AlertSuccess } from 'vform'
-import Navigation from "./Navigation";
+import Navigation from "./Navigation"
+import Icon from './Icon'
 
 // Components that are registered globaly.
 [
@@ -15,7 +16,8 @@ import Navigation from "./Navigation";
   HasError,
   AlertError,
   AlertSuccess,
-  Navigation
+  Navigation,
+  Icon,
 ].forEach(Component => {
   Vue.component(Component.name, Component)
 })

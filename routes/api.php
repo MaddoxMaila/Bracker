@@ -67,3 +67,13 @@ Route::group([
     Route::get('positions/{busNumber}', [\App\Http\Controllers\LocationModelController::class, 'positionAlone']);
 
 });
+
+Route::group([
+    'prefix' => 'alerts'
+], function(){
+
+    Route::post('add', [\App\Http\Controllers\NotificationsModelController::class, 'add']);
+
+    Route::get('all', [\App\Http\Controllers\NotificationsModelController::class, 'getAll']);
+
+});

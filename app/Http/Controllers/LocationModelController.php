@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use phpDocumentor\Reflection\Location;
 use App\Http\Controllers\AppHelper;
+use App\Events\LocationsEvent;
 
 class LocationModelController extends Controller
 {
@@ -15,13 +16,14 @@ class LocationModelController extends Controller
 
         if(!preg_match("/[0-9]/", $busId)) return AppHelper::error('Invalid request');
 
-        if(!$request->hasAny(['latitude', 'longitude', 'street'])) return AppHelper::error("Incomplete request");
+        if(!$request->hasAny(['latitude', 'longitude', 'street'])) return response()->json(AppHelper::error("Incomplete request"));
 
         $currentLocation = [
             'bus_id' => $busId,
             'latitude' => $request->latitude,
             'longitude' => $request->longitude,
-            'street' => $request->street
+            'street' => $request->street,
+            'prev_location' => 'prev_loc'
         ];
 
         $mLocation = Locations::all()
@@ -34,17 +36,17 @@ class LocationModelController extends Controller
                                             ->where('bus_id', $busId)
                                             ->delete()){
 
-                    $this->save($currentLocation);
+                    response()->json($this->save($currentLocation));
 
                 }else{
 
-                    return AppHelper::error("Unable to save current location");
+                    return response()->json(AppHelper::error("Unable to save current location"));
 
                 }
 
             }else{
 
-                $this->save($currentLocation);
+                return response()->json($this->save($currentLocation));
 
             }
 
@@ -82,11 +84,13 @@ class LocationModelController extends Controller
 
             /* Event Will Be Added Here */
 
+            // event(new LocationsEvent());
+
             /* Return successful */
-            return response()->json([
+            return [
                 'error' => false,
                 'message' => 'location saved'
-            ]);
+            ];
 
         }else{
 
@@ -103,7 +107,7 @@ class LocationModelController extends Controller
 
         foreach ($locations as $location){
 
-            $resp['bus'][] = $this->modelLocations(new Locations($location));
+            $resp['buses'][] = $this->modelLocations(new Locations($location));
 
         }
 

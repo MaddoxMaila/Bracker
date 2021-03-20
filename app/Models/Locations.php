@@ -12,7 +12,7 @@ class Locations extends Model
     protected $table = "locations";
     protected $primaryKey = 'location_id';
     protected $fillable = [
-    	'bus_id', 'latitude', 'longitude', 'street', 'location_id'
+    	'bus_id', 'latitude', 'longitude', 'street', 'location_id', 'prev_location'
     ];
 
    public $timestamps = false;
