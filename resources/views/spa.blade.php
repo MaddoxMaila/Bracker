@@ -41,6 +41,6 @@ $config = [
 
   {{-- Load the application scripts --}}
   <script src="{{ mix('dist/js/app.js') }}"></script>
-  <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBDiwgyOB93hfiIKMUflHfYP3nBfuDirio&callback=initMap"></script>
+  <script async defer src="&callback=initMap"></script>
 </body>
 </html>
